@@ -3,7 +3,21 @@ import { IncomingMessage, ServerResponse } from "http";
 import { body, validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middleware";
 import prisma from "./db";
-import { createProduct, getOneProduct, getProducts } from "./handlers/product";
+import {
+  createProduct,
+  getOneProduct,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+} from "./handlers/product";
+
+import {
+  getUpdates,
+  getOneUpdate,
+  updateUpdate,
+  createUpdate,
+  deleteUpdate,
+} from "./handlers/update";
 
 const router = Router();
 
@@ -16,7 +30,7 @@ router.put(
   body("name").isString(),
 
   handleInputErrors,
-  (req, res) => {}
+  updateProduct
 );
 
 router.post(
@@ -26,20 +40,20 @@ router.post(
   createProduct
 );
 
-router.delete("/product/:id", (req, res) => {});
+router.delete("/product/:id", deleteProduct);
 
-router.get("/update", (req, res) => {});
+router.get("/update", getUpdates);
 
-router.get("/update/:id", (req, res) => {});
+router.get("/update/:id", getOneUpdate);
 
 router.put(
   "/update/:id",
-  body("title").isString().trim().notEmpty(),
-  body("body").trim().notEmpty(),
+  body("title").optional().isString().trim().notEmpty(),
+  body("body").optional().trim().notEmpty(),
   body("version").optional().isString().trim().notEmpty(),
   body("asset").optional().isString().trim().notEmpty(),
   body("status").isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
-  (req, res) => {}
+  updateUpdate
 );
 
 router.post(
@@ -50,20 +64,20 @@ router.post(
   body("asset").optional().isString().trim().notEmpty(),
   body("productId").isString().trim().notEmpty(),
   body("status").isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
-  body("productId").custom(async (value, { req }) => {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: req.user.id,
-      },
-    });
-    console.log(user);
-  }),
-  body("UpdatePoints").isArray(),
+  //   body("productId").custom(async (value, { req }) => {
+  //     const user = await prisma.user.findUnique({
+  //       where: {
+  //         id: req.user.id,
+  //       },
+  //     });
+  //     console.log(user);
+  //   }),
+  //   body("UpdatePoints").isArray(),
   handleInputErrors,
-  (req, res) => {}
+  createUpdate
 );
 
-router.delete("/update/:id", (req, res) => {});
+router.delete("/update/:id", deleteUpdate);
 
 router.get("/updatepoint", (req, res) => {});
 
