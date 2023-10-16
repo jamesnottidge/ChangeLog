@@ -3,14 +3,13 @@ import { IncomingMessage, ServerResponse } from "http";
 import { body, validationResult } from "express-validator";
 import { handleInputErrors } from "./modules/middleware";
 import prisma from "./db";
+import { createProduct, getOneProduct, getProducts } from "./handlers/product";
 
 const router = Router();
 
-router.get("/product", (req, res) => {
-  res.send(req.shhhh_secret);
-});
+router.get("/product", getProducts);
 
-router.get("/product/:id", (req, res) => {});
+router.get("/product/:id", getOneProduct);
 
 router.put(
   "/product/:id",
@@ -24,16 +23,7 @@ router.post(
   "/product",
   body("name", "this is a lot").isString().trim().notEmpty(),
   handleInputErrors,
-  (req, res) => {
-    const name: string = req.body.name;
-    const product = prisma.product.create({
-      data: {
-        name,
-        belongsToId: req.user.id,
-      },
-    });
-    res.json({ product });
-  }
+  createProduct
 );
 
 router.delete("/product/:id", (req, res) => {});
