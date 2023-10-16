@@ -52,7 +52,7 @@ router.put(
   body("body").optional().trim().notEmpty(),
   body("version").optional().isString().trim().notEmpty(),
   body("asset").optional().isString().trim().notEmpty(),
-  body("status").isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
+  body("status").optional().isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
   updateUpdate
 );
 
@@ -63,7 +63,7 @@ router.post(
   body("version").optional().isString().trim().notEmpty(),
   body("asset").optional().isString().trim().notEmpty(),
   body("productId").isString().trim().notEmpty(),
-  body("status").isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
+  body("status").optional().isIn([" IN_PROGRESS", "SHIPPED", "DEPRECATED"]),
   //   body("productId").custom(async (value, { req }) => {
   //     const user = await prisma.user.findUnique({
   //       where: {
