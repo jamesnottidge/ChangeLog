@@ -3,7 +3,7 @@ import merge from "lodash.merge"
 // make sure NODE_ENV is set
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
-const stage = process.env.STAGE || "local";
+const stage = process.env.STAGE || "production";
 let envConfig;
 
 // dynamically require each config depending on the stage we're in
